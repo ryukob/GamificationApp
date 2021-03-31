@@ -130,8 +130,6 @@ struct TaskView: View {
                                                         profile.level = profile.exLevel
                                                         profile.needForLevelUpExp = profile.exNeedForLevelUpExp
                                                     }
-                                                    
-                                                    
                       )
                 )   // 破壊的変更用
             }

@@ -10,9 +10,10 @@ import SwiftUI
 struct TaskRegistView: View {
     
     @ObservedObject var profile = UserProfile()
-//    @State var taskName = ""
+    //    @State var taskName = ""
     @State var flag = false
-//    @EnvironmentObject var model: Model
+    //    @EnvironmentObject var model: Model
+    @State private var showingRegistationAlert = false
     
     
     var body: some View {
@@ -53,15 +54,12 @@ struct TaskRegistView: View {
                 
                 Spacer()
                 
-                //                NavigationLink(destination: TaskView(), isActive: self.$model.secondViewPushed) {
                 Button(action: {
                     withAnimation() {
-                        print(self.flag)
-                        profile.isTaskRegisted.toggle()
+                        //                        print(self.flag)
+                        //                        profile.isTaskRegisted.toggle()
+                        showingRegistationAlert = true
                     }
-                    //                self.flag.toggle()
-                    //                self.model.secondViewPushed = true
-                    //                print(self.flag)
                 }){
                     Text("START")
                         .font(.title)
@@ -74,10 +72,18 @@ struct TaskRegistView: View {
                 .padding(10) //ボタン内部のpadding
                 .background(Color(red: 18/255, green: 144/255, blue: 142/255, opacity: 1))
                 .cornerRadius(48.0)
-                //                }
+                .alert(isPresented: $showingRegistationAlert){
+                    Alert(title: Text(String(format: "「\(profile.taskName)」で登録しますか？")),
+                          primaryButton: .default(Text("いいえ")),    // キャンセル用
+                          secondaryButton: .default(Text("はい"),
+                                                    action: {
+                                                        profile.isTaskRegisted.toggle()
+                                                    }
+                          )
+                    )
+                }
             }
             .padding(.bottom, 10)
         }
-        //        }
     }
 }
