@@ -33,12 +33,14 @@ struct TaskRegistView: View {
                 }
                 .padding()
                 .background(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1))
-                
-                Spacer()
+                .edgesIgnoringSafeArea(.all)    //すべてのセーフエリアを無視
+                .statusBar(hidden: true)    // trueだと、ステータスバーを隠す
+
                 Text("習慣を登録しよう")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
+                    .padding(.top,36)
                 
                 HStack{
                     Spacer(minLength:20)
@@ -52,6 +54,7 @@ struct TaskRegistView: View {
                     Spacer(minLength:20)
                 }
                 
+//                Spacer(minLength:160)
                 Spacer()
                 
                 Button(action: {
