@@ -23,7 +23,8 @@ class ExpCalculator{
         nextExp += baseExp
         // ボーナス分の取得
         let temp = (peakLevel * levelUpRate - peakDays * baseExp)
-        nextExp += temp / 27.4 / (1.0 + sigmoid(continuousDays: continuousDays))
+//        nextExp += temp / 27.4 / (1.0 + sigmoid(continuousDays: continuousDays))
+        nextExp += temp / 27.4 / (1.0 + sigmoid(continuousDays: continuousDays))+200 //デバッグ用
         
         print(nextExp)
         return nextExp

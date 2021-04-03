@@ -21,25 +21,26 @@ struct TaskView: View {
             HStack{
                 //Header
                 Text("Gamify")
-                    .font(.custom("Arial Rounded MT Bold", size: 36))
+                    .font(.custom("Arial Rounded MT Bold", size: 32))
                     .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
                 Spacer()
             }
-            .padding()
+            .padding(8)
             .background(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1))
-            
+            .edgesIgnoringSafeArea(.all)    //すべてのセーフエリアを無視
+            .statusBar(hidden: true)    // trueだと、ステータスバーを隠す
             Spacer()
             
             //Level表示
             Text("Lv. " + String(profile.level))
                 .font(.system(size: 64, weight: .bold , design: .default))
                 .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
-                .padding(.bottom, 10)
+                .padding(.bottom, 8)
             
             
             //ProgressBar
             ProgressBar(value:profile.currentExpAfterLevelUp,maxValue:100)
-                .frame(width:280, height:30)
+                .frame(width:280, height:24)
             Spacer()
             
             Button(action: {
@@ -80,13 +81,13 @@ struct TaskView: View {
                     print(profile.currentExpAfterLevelUp)
                     
                     // 次回更新日時を計算するため，21時間後のdataComponentsを取得
-//                    let late3h = myCal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date().addingTimeInterval(60 * 60 * (24-3)))
+                    //                    let late3h = myCal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date().addingTimeInterval(60 * 60 * (24-3)))
                     let late3h = myCal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date().addingTimeInterval(1))
                     // 次回更新日時の取得と格納
                     var kousin = late3h
-//                    kousin.hour = 3
-//                    kousin.minute = 0
-//                    kousin.second = 0
+                    //                    kousin.hour = 3
+                    //                    kousin.minute = 0
+                    //                    kousin.second = 0
                     profile.updateTime = kousin
                 }
                 else{
@@ -111,7 +112,7 @@ struct TaskView: View {
                     Spacer()
                     
                 }
-                .frame(width: 280.0, height: 280.0)
+                .frame(width: 240.0, height: 240.0)
                 .foregroundColor(profile.isTaskDone ? Color.white : Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
                 .background(
                     profile.isTaskDone ? Color(red: 18/255, green: 144/255, blue: 142/255, opacity: 1) : Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1)
@@ -133,12 +134,9 @@ struct TaskView: View {
                       )
                 )   // 破壊的変更用
             }
-            
-            
             Spacer()
-            
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, 8)
         .onChange(of: scenePhase) { phase in
             if phase == .background {
                 print("バックグラウンド！")
@@ -168,11 +166,12 @@ struct TaskView: View {
         // 経験値詳細表示ボックス
         let description = (profile.isTaskDone == true) ? String(format: "%.0fexpを獲得しました\n継続日数ボーナスにより獲得経験値が上昇しました(%.0f→%.0f)",profile.previousExp,profile.previousExp,profile.nextExp): ""
         Text(description)
-        .font(.system(size: 18, weight: .regular , design: .default))
-        .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
-        .padding(10)
-        .frame(width: 280.0, height: 140.0)
-        .border(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1), width: 10)
+            .font(.system(size: 18, weight: .regular , design: .default))
+            .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
+            .padding(10) //文字が隠れないように枠の分だけパディング
+            .frame(width: 280.0, height: 100.0)
+            .border(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1), width: 10)
+            .padding(.bottom, 10)
     }
 }
 
@@ -200,9 +199,9 @@ struct ProgressBar: View {
                                                 blue: 196/255,
                                                 alpha: 1.0)),
          foregroundColor: Color = Color(UIColor(red: 151/255,
-                                          green: 206/255,
-                                          blue: 204/255,
-                                          alpha: 1.0))
+                                                green: 206/255,
+                                                blue: 204/255,
+                                                alpha: 1.0))
     ){
         self.value = value
         self.maxValue = maxValue
@@ -219,7 +218,7 @@ struct ProgressBar: View {
     }
     
     var body: some View {
-    // 1
+        // 1
         ZStack {
             // 2
             GeometryReader { geometryReader in
@@ -228,7 +227,7 @@ struct ProgressBar: View {
                     Capsule()
                         .foregroundColor(self.backgroundColor) // 4
                 }
-                    
+                
                 Capsule()
                     .frame(width: self.progress(value: self.value,
                                                 maxValue: self.maxValue,
