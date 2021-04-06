@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct TaskView: View {
     
@@ -15,6 +16,9 @@ struct TaskView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State var myCal = Calendar(identifier: .gregorian)
     @State private var showingAlert = false
+    @State var currentExpAfterLevelUp = 0.0
+    @State var countStopFlag = false
+    @State var levelUpFlag = false
     
     var body: some View {
         VStack {
@@ -64,14 +68,16 @@ struct TaskView: View {
                     // 経験値の更新
                     profile.previousExp = profile.nextExp
                     // 経験値の取得
-                    profile.currentExpAfterLevelUp += profile.nextExp
+                    currentExpAfterLevelUp = profile.currentExpAfterLevelUp + profile.nextExp
                     
                     // レベルアップ判定
-                    while profile.currentExpAfterLevelUp > profile.needForLevelUpExp {
-                        profile.level += 1
-                        profile.currentExpAfterLevelUp -= profile.needForLevelUpExp
-                        profile.needForLevelUpExp = ExpCalculator.getNeedForLevelUpExp()
-                    }
+//                    while profile.currentExpAfterLevelUp > profile.needForLevelUpExp {
+//                        profile.level += 1
+//                        profile.currentExpAfterLevelUp -= profile.needForLevelUpExp
+//                        profile.needForLevelUpExp = ExpCalculator.getNeedForLevelUpExp()
+//                    }
+                    createTimer()
+                   
                     
                     // 次回取得経験値の計算
                     profile.nextExp = ExpCalculator.getNextExp(continuousDays: profile.continuousDays + 1)
@@ -173,7 +179,31 @@ struct TaskView: View {
             .border(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1), width: 10)
             .padding(.bottom, 10)
     }
+    
+    func createTimer(){
+        Timer.scheduledTimer(withTimeInterval: 1,  repeats: false){
+            _ in if currentExpAfterLevelUp > profile.needForLevelUpExp {
+                if countStopFlag == false && levelUpFlag == false  {
+                    profile.currentExpAfterLevelUp = 100
+                    countStopFlag = true
+                }else if countStopFlag == true && levelUpFlag == false{
+                    profile.level += 1
+                    levelUpFlag = true
+                }else if  countStopFlag == true && levelUpFlag == true{
+                    currentExpAfterLevelUp -= profile.needForLevelUpExp
+                    profile.needForLevelUpExp = ExpCalculator.getNeedForLevelUpExp()
+                    profile.currentExpAfterLevelUp = 0
+                    countStopFlag = false
+                    levelUpFlag = false
+                }
+                createTimer()
+            }else{
+                profile.currentExpAfterLevelUp = currentExpAfterLevelUp
+            }
+        }
+    }
 }
+
 
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
@@ -239,6 +269,12 @@ struct ProgressBar: View {
     }
 }
 
-
-
+//class Timer4levelUpAnimation: ObservedObject{
+//    func createTimer(){
+//            //timerを生成する.
+//        var maintimer = Timer.scheduledTimer(withTimeInterval: 1,  repeats: true){
+//            _ in print("hoge")
+//        }
+//    }
+//}
 
