@@ -29,9 +29,10 @@ struct TaskRegistView: View {
                     Text("Gamify")
                         .font(.custom("Arial Rounded MT Bold", size: 36))
                         .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
-                    Spacer()
+                        Spacer()
                 }
                 .padding()
+                .padding(.top,UIApplication.shared.statusBarFrame.size.height / 2)
                 .background(Color(red: 151/255, green: 206/255, blue: 204/255, opacity: 1))
                 .edgesIgnoringSafeArea(.all)    //すべてのセーフエリアを無視
                 .statusBar(hidden: true)    // trueだと、ステータスバーを隠す

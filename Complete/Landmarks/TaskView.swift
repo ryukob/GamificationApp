@@ -20,6 +20,7 @@ struct TaskView: View {
     @State var countStopFlag = false
     @State var levelUpFlag = false
     
+    
     var body: some View {
         VStack {
             HStack{
@@ -27,6 +28,7 @@ struct TaskView: View {
                 Text("Gamify")
                     .font(.custom("Arial Rounded MT Bold", size: 32))
                     .foregroundColor(Color(red: 76/255, green: 76/255, blue: 84/255, opacity: 1))
+                    .padding(.top,UIApplication.shared.statusBarFrame.size.height / 2)
                 Spacer()
             }
             .padding(8)
